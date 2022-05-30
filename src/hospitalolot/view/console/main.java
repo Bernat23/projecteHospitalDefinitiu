@@ -14,6 +14,7 @@ import hospitalolot.model.business.entities.Guardies;
 import hospitalolot.model.business.entities.Treballador;
 import hospitalolot.model.persistence.dao.implementations.jdbc.JDBCGuardies;
 import hospitalolot.model.persistence.exception.DAOException;
+import hospitalolot.view.gui.HospitalOlot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -44,41 +45,41 @@ public class main extends Application {
     }
 
     public static void main(String[] args) {
+    }
+    
+    public void menuAdministrador(Treballador t) {
         int opcio;
-        Scanner lector = new Scanner(System.in);
-        System.out.println("MENÚ");
-        System.out.println("1. ESCOLLIR GUÀRDIES");
-        System.out.println("2. DESESCOLLIR GUÀRDIES");
-        System.out.println("3. SUPLIR GUÀRDIA");
-        opcio = lector.nextInt();
-        Treballador t = new Treballador();
-        switch (opcio) {
-            case 1:
-            {
-                try {
+            Scanner lector = new Scanner(System.in);
+            System.out.println("MENÚ");
+            System.out.println("1. ESCOLLIR GUÀRDIES");
+            System.out.println("2. DESESCOLLIR GUÀRDIES");
+            System.out.println("3. SUPLIR GUÀRDIA");
+            System.out.println("4. AFEGIR GUÀRDIA");
+            System.out.println("5. AVISAR TREBALLADORS QUE HI HA PLACES LLIURES");
+            System.out.println("6. SUPRIMIR GUÀRDIA");
+
+    }
+
+    public void menuTreballador(Treballador t) {
+        try {
+            int opcio;
+            Scanner lector = new Scanner(System.in);
+            System.out.println("MENÚ");
+            System.out.println("1. ESCOLLIR GUÀRDIES");
+            System.out.println("2. DESESCOLLIR GUÀRDIES");
+            System.out.println("3. SUPLIR GUÀRDIA");
+           
+            opcio = lector.nextInt();
+            switch (opcio) {
+                case 1:
                     t.mostrarGuardies();
-                } catch (DAOException ex) {
-                    System.out.println(ex);
-                }
-            }
-            {
-                try {
                     t.reservarGuardia();
-                } catch (DAOException ex) {
-                    System.out.println(ex);
-                }
-            }
-
-
-            case 2:
-            {
-                try {
+                    break;
+                case 2:
                     t.cancelarGuardia();
-//                escollirGuardia();
-                } catch (DAOException ex) {
-                    System.out.println(ex);
-                }
             }
+        } catch (DAOException ex) {
+            Logger.getLogger(HospitalOlot.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
