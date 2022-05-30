@@ -4,10 +4,14 @@
  */
 package hospitalolot.model.business.entities;
 
+import hospitalolot.model.persistence.dao.implementations.jdbc.JDBCGuardies;
+import hospitalolot.model.persistence.dao.implementations.jdbc.utils.JDBCTipusGuardia;
+import hospitalolot.model.persistence.exception.DAOException;
 import java.time.LocalDate;
 import static java.time.temporal.TemporalAdjusters.next;
 import java.time.DayOfWeek;
 import static java.time.DayOfWeek.SUNDAY;
+import java.util.List;
 
 /**
  *
@@ -15,26 +19,35 @@ import static java.time.DayOfWeek.SUNDAY;
  */
 public class dates {
 
+    static LocalDate dataActual = LocalDate.now();
     LocalDate data;
+    JDBCTipusGuardia jtg = new JDBCTipusGuardia();
+    JDBCGuardies jg = new JDBCGuardies();
 
-    public void crearGuardies() {
-        LocalDate nextSunday = LocalDate.now();
-        LocalDate anyQueVe = nextSunday.plusYears(1);
-        if (nextSunday.getDayOfWeek() == SUNDAY) {
+    public void crearGuardies() throws DAOException {
+        LocalDate anyQueVe = LocalDate.now().plusYears(1); //any següent quan s'ha d'acabar
+        if (dataActual.getDayOfWeek() == SUNDAY) {
 
         } else {
-            nextSunday = nextSunday.with(next(SUNDAY));
+            dataActual = dataActual.with(next(SUNDAY));
         }
         boolean arribaAny;
+        List<Guardies> guardies = jtg.getAll();
         do {
-            if (nextSunday.compareTo(anyQueVe) == -1) {
+            //System.out.println((dataActual.compareTo(anyQueVe) == -1)); Comprovacio de com funciona el compareTo
+            if (dataActual.compareTo(anyQueVe) == 1) {
                 arribaAny = false;
             } else {
                 arribaAny = true;
-                Guardia g = new Guardia();
+                for (int i = 0; i < guardies.size(); i++) {
+                    Guardies g = guardies.get(i);
+                    g.setDia(dataActual);
+                    jg.add(g);
+                }
+                dataActual = dataActual.with(next(SUNDAY));
+
             }
         } while (arribaAny);
-        nextSunday = nextSunday.with(next(SUNDAY));
 
     }
 }

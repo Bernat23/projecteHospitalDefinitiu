@@ -2,15 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXML2.java to edit this template
  */
-package hospitalolotapp.controller;
+package hospitalolot.controller;
 
 import hospitalolot.model.business.entities.Treballador;
+import hospitalolot.model.business.entities.Usuari;
+import hospitalolot.model.persistence.dao.implementations.jdbc.JDBCTreballador;
+import hospitalolot.model.persistence.dao.implementations.jdbc.JDBCUsuari;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import hospitalolot.model.persistence.dao.implementations.jdbc.mysql.MySQLConnection;
+import hospitalolot.model.persistence.exception.DAOException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -23,6 +28,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import java.sql.PreparedStatement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
@@ -31,7 +41,7 @@ import javafx.stage.Stage;
  */
 public class FXMLDocumentController implements Initializable {
 
-    private Treballador treballador;
+    private JDBCUsuari usuari;
 
     @FXML
     private Label lblUsuari;
@@ -46,48 +56,18 @@ public class FXMLDocumentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        treballador = new Treballador();
+        usuari = new JDBCUsuari();
     }
 
     @FXML
-    private void btnIniciarSessio(ActionEvent event) {
+    private void btnIniciarSessio(ActionEvent event) throws DAOException {
+        JDBCUsuari usuariDAO = new JDBCUsuari();
+        Usuari u = new Usuari();
+        String contrasenyaEntrada = txtContrasenya.getText();
 
-        try {
-            boolean connectat = false;
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://192.168.18.220:3306/hospital", "Administrador", "Patata123");
-            String usuari = txtUsuari.getText();
-            String contrasenya = txtContrasenya.getText();
-
-            Statement stm = con.createStatement();
-
-            String consultaSql = "SELECT * FROM usuaris where NomUsuari='" + usuari + "' and contrasenya='" + contrasenya + "'";
-            //            main start stop checkcredential getscene.getwindow 
-            ResultSet resultat = stm.executeQuery(consultaSql);
-
-            if (resultat!= null) {
-                if (usuari == resultat.getString("NomUsuari") && contrasenya == resultat.getString("contrasenya")) {
-                    System.out.println("Usuari iniciat!");
-                    connectat = true;
-                }
-            }
-
-            if (connectat) {
-            }
-//            if (resultat.next()) {
-//                int idUsuari = resultat.getInt("idUsuaris");
-//                String nomUsuari = resultat.getString("NomUsuari");
-//                String contrasenyaUsuari = resultat.getString("contrasenya");
-//                int idTreballador = resultat.getInt("idTreballador");
-//                System.out.println("idUsuaris = " + idUsuari + " | nomUsuari = " + nomUsuari + " | contrasenya = " + contrasenyaUsuari + " | idTreballador = " + idTreballador);
-//            }
-//            if (con != null) {
-//                System.out.println("Connexió realitzada correctament.");
-//            }
-        } catch (ClassNotFoundException e) {
-            System.out.println("No es troba la classe. " + e.getMessage());
-        } catch (SQLException e) {
-            System.out.println("Falla en connectar-se a la base de dades. " + e.getMessage());
-        }
+        u = usuariDAO.getUsuari(contrasenyaEntrada);
+        
+        JDBCTreballador treballadorDAO = new JDBCTreballador();
+        Treballador t = treballadorDAO.get(u.getIdTreballador());
     }
 }

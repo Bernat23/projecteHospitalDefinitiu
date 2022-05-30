@@ -16,7 +16,7 @@ public class Categoria extends Entity{
     }
 
     public Categoria(String tipus, long id) {
-        super(id);
+        super.setId(id);
         this.tipus = tipus;
     }
 

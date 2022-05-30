@@ -19,7 +19,7 @@ public class Torn extends Entity{
     
 
     public Torn(String horari, long id) {
-        super(id);
+        super.setId(id);
         this.horari = horari;
     }
 

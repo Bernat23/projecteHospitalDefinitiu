@@ -38,9 +38,9 @@ public class MySQLConnection {
             Class.forName(driver);
             connection = DriverManager.getConnection(url, user, password);
         } catch(IOException ex){
-            
+            System.out.println("No es troba el fitxer de configuració.");
         } catch (ClassNotFoundException ex) {
-            System.out.println(ex);
+            System.out.println("No es troba la classe. " + ex.getMessage());
         } catch(SQLException ex){
             System.out.println("Error de connexió: " + ex.getMessage());
         }

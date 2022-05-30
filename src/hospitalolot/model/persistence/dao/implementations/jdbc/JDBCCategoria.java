@@ -27,10 +27,10 @@ public class JDBCCategoria implements CategoriaDAO {
     public Categoria get(long id) throws DAOException {
         try {
             PreparedStatement query = MySQLConnection.getInstance().getConnection().prepareStatement("Select * from categoria where idCategoria = ?");
-            query.setString(1, Long.toString(id));
+            query.setLong(1, id);
             ResultSet result = query.executeQuery();
-            Categoria c = new Categoria(result.getString("categoria"), result.getLong("idCategoria"));
             if(result.next()){
+                Categoria c = new Categoria(result.getString("tipus"), result.getLong("idCategoria"));
                 return c;
             }
             return null;
@@ -43,11 +43,11 @@ public class JDBCCategoria implements CategoriaDAO {
     @Override
     public List<Categoria> getAll() throws DAOException {
         try {
-            Statement query = MySQLConnection.getInstance().getConnection().createStatement();
-            ResultSet result = query.executeQuery("Select * from categoria");
+            PreparedStatement query = MySQLConnection.getInstance().getConnection().prepareStatement("Select * from categoria");
+            ResultSet result = query.executeQuery();
             List<Categoria> llista = new ArrayList<>();
             while (result.next()) {
-                llista.add(new Categoria(result.getString("Categoria"), result.getInt("idCategoria")));
+                llista.add(get(result.getInt("idCategoria")));
                
             }
             return llista;
@@ -70,7 +70,7 @@ public class JDBCCategoria implements CategoriaDAO {
             query.executeUpdate();
             ResultSet rst = query.getGeneratedKeys();
             if(rst.next()){
-                t.setId(rst.getInt("idCategoria"));
+                t.setId(rst.getInt(1));
             }
         } catch (SQLException ex) {
             throw new DAOException();
@@ -81,7 +81,7 @@ public class JDBCCategoria implements CategoriaDAO {
     public void delete(Categoria t) throws DAOException {
         try {
             PreparedStatement query = MySQLConnection.getInstance().getConnection().prepareStatement("DELETE FROM TORN WHERE idCategoria = ?");
-            query.setString(1, Long.toString(t.getId()));
+            query.setLong(1, t.getId());
             query.executeUpdate();
         } catch (SQLException ex) {
             throw new DAOException();

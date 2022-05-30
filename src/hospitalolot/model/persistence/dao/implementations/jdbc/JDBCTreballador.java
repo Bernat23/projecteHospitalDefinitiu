@@ -24,17 +24,24 @@ public class JDBCTreballador implements TreballadorDAO {
     @Override
     public Treballador get(long id) throws DAOException {
         try {
-            PreparedStatement query = MySQLConnection.getInstance().getConnection().prepareStatement("Select * from treballadors where id = ?");
+            PreparedStatement query = MySQLConnection.getInstance().getConnection().prepareStatement("Select * from treballadors where idTreballador = ?");
             query.setLong(1, id);
             ResultSet result = query.executeQuery();
-            Treballador t = new Treballador(result.getLong("idTreballador"), result.getString("nom"), result.getString("cognom"), result.getBoolean("temporal"));
             if (result.next()) {
+                Treballador t = new Treballador(result.getLong("idTreballador"), result.getString("nom"), result.getString("cognom"));
+                int bool = result.getInt("temporal");
+                if (bool == 0) {
+                    t.setTemporal(false);
+                } else {
+                    t.setTemporal(true);
+                }
                 return t;
             }
             return null;
         } catch (SQLException ex) {
-            throw new DAOException();
+            System.out.println(ex);
         }
+        return null;
     }
 
     @Override
@@ -50,7 +57,8 @@ public class JDBCTreballador implements TreballadorDAO {
             }
             return llista;
         } catch (SQLException ex) {
-            throw new DAOException();
+            System.out.println(ex);
+            return null;
         }
     }
 
@@ -68,7 +76,7 @@ public class JDBCTreballador implements TreballadorDAO {
             query.executeUpdate();
             ResultSet rst = query.getGeneratedKeys();
             if (rst.next()) {
-                t.setId(rst.getInt("idTreballador"));
+                t.setId(rst.getInt(1));
             }
         } catch (SQLException ex) {
             throw new DAOException();
@@ -78,7 +86,7 @@ public class JDBCTreballador implements TreballadorDAO {
     @Override
     public void delete(Treballador t) throws DAOException {
         try {
-            PreparedStatement query = MySQLConnection.getInstance().getConnection().prepareStatement("DELETE FROM treballadors WHERE ID = ?");
+            PreparedStatement query = MySQLConnection.getInstance().getConnection().prepareStatement("DELETE FROM treballadors WHERE IDtreballador = ?");
             query.setLong(1, t.getId());
             query.executeUpdate();
         } catch (SQLException ex) {

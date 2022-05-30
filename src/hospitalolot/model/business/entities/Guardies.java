@@ -5,6 +5,7 @@
 package hospitalolot.model.business.entities;
 
 import java.util.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -15,7 +16,7 @@ public class Guardies extends Entity{
     private Unitat u;
     private Torn t;
     private Categoria c;
-    private Date dia;
+    private LocalDate dia;
     private byte quantitatTreballadors;
 
     public Guardies() {
@@ -33,7 +34,7 @@ public class Guardies extends Entity{
         return c;
     }
 
-    public Guardies(Unitat u, Torn t, Categoria c, Date dia, byte quantitatTreballadors) {
+    public Guardies(Unitat u, Torn t, Categoria c, LocalDate dia, byte quantitatTreballadors) {
         this.u = u;
         this.t = t;
         this.c = c;
@@ -41,8 +42,15 @@ public class Guardies extends Entity{
         this.quantitatTreballadors = quantitatTreballadors;
     }
 
-    public Guardies(Unitat u, Torn t, Categoria c, Date dia, byte quantitatTreballadors, long id) {
-        super(id);
+    public Guardies(Unitat u, Torn t, Categoria c, byte quantitatTreballadors) {
+        this.u = u;
+        this.t = t;
+        this.c = c;
+        this.quantitatTreballadors = quantitatTreballadors;
+    }
+
+    public Guardies(Unitat u, Torn t, Categoria c, LocalDate dia, byte quantitatTreballadors, long id) {
+        super.setId(id);
         this.u = u;
         this.t = t;
         this.c = c;
@@ -50,11 +58,11 @@ public class Guardies extends Entity{
         this.quantitatTreballadors = quantitatTreballadors;
     }
 
-    public Date getDia() {
+    public LocalDate getDia() {
         return dia;
     }
 
-    public void setDia(Date dia) {
+    public void setDia(LocalDate dia) {
         this.dia = dia;
     }
 

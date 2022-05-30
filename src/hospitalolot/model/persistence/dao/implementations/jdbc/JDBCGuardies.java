@@ -33,14 +33,14 @@ public class JDBCGuardies implements GuardiesDAO {
     @Override
     public Guardies get(long id) throws DAOException {
         try {
-            PreparedStatement query = MySQLConnection.getInstance().getConnection().prepareStatement("Select * from guardies where id = ?");
+            PreparedStatement query = MySQLConnection.getInstance().getConnection().prepareStatement("Select * from guardies where idguardies = ?");
             query.setLong(1, id);
             ResultSet result = query.executeQuery();
             if (result.next()) {
                 Unitat u = ju.get(result.getInt("idUnitat"));
                 Torn t = jt.get(result.getInt("idTorn"));
                 Categoria c = jc.get(result.getInt("idCategoria"));
-                Guardies g = new Guardies(u, t, c, result.getDate("dia"), result.getByte("quantitatLlocsTreball"));
+                Guardies g = new Guardies(u, t, c, result.getDate("dia").toLocalDate(), result.getByte("quantitatLlocsTreball"));
                 return g;
             }
 
@@ -54,15 +54,14 @@ public class JDBCGuardies implements GuardiesDAO {
     @Override
     public List<Guardies> getAll() throws DAOException {
          try {
-            Statement query = MySQLConnection.getInstance().getConnection().createStatement();
-            ResultSet result = query.executeQuery("Select * from guardies");
+            PreparedStatement query = MySQLConnection.getInstance().getConnection().prepareStatement("Select * from guardies");
+            ResultSet result = query.executeQuery();
             List<Guardies> llista = new ArrayList<Guardies>();
-
             while (result.next()) {
                 Unitat u = ju.get(result.getInt("idUnitat"));
                 Torn t = jt.get(result.getInt("idTorn"));
                 Categoria c = jc.get(result.getInt("idCategoria"));
-                llista.add( new Guardies(u, t, c, result.getDate("dia"), result.getByte("quantitatLlocsTreball")));
+                llista.add( new Guardies(u, t, c, result.getDate("dia").toLocalDate(), result.getByte("quantitatLlocsTreball")));
             }
             return llista;
         } catch (SQLException ex) {
@@ -73,28 +72,22 @@ public class JDBCGuardies implements GuardiesDAO {
     @Override
     public void add(Guardies g) throws DAOException {
         try {
-            PreparedStatement query = MySQLConnection.getInstance().getConnection().prepareStatement("INSERT INTO treballadors(unitat, torn, categoria, dia, quantitatLlocsTreball) values(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement query = MySQLConnection.getInstance().getConnection().prepareStatement("INSERT INTO guardies(idunitat, idtorn, idcategoria, dia, quantitatTreballadors) values(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             query.setLong(1, g.getU().getId());
-            query.executeUpdate();
+
 
             query.setLong(2, g.getT().getId());
-            query.executeUpdate();
+
 
             query.setLong(3, g.getC().getId());
-            query.executeUpdate();
-            
-            query.setDate(4, (Date) g.getDia());
-            query.executeUpdate();
-            
+            query.setDate(4, Date.valueOf(g.getDia()));       
             query.setByte(5, g.getQuantitatTreballadors());
             query.executeUpdate();
-            
             ResultSet rst = query.getGeneratedKeys();
             if (rst.next()) {
-                g.setId(rst.getInt("idTreballador"));
             }
         } catch (SQLException ex) {
-            throw new DAOException();
+            System.out.println(ex);
         }
     }
 

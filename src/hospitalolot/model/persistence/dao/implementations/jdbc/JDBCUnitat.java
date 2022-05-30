@@ -23,8 +23,8 @@ public class JDBCUnitat implements UnitatDAO {
     @Override
     public Unitat get(long id) throws DAOException {
         try {
-            PreparedStatement query = MySQLConnection.getInstance().getConnection().prepareStatement("Select * from unitats where id = ?");
-            query.setString(1, Long.toString(id));
+            PreparedStatement query = MySQLConnection.getInstance().getConnection().prepareStatement("Select * from unitats where idUnitat = ?");
+            query.setLong(1, (id));
             ResultSet result = query.executeQuery();
             if (result.next()) {
                 /**/
@@ -62,7 +62,7 @@ public class JDBCUnitat implements UnitatDAO {
             query.executeUpdate();
             ResultSet rst = query.getGeneratedKeys();
             if (rst.next()) {
-                t.setId(rst.getInt("idUnitat"));
+                t.setId(rst.getInt(1));
             }
         } catch (SQLException ex) {
             System.out.println(ex);

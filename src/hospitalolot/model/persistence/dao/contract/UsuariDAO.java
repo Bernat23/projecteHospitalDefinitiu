@@ -4,12 +4,12 @@
  */
 package hospitalolot.model.persistence.dao.contract;
 
-import hospitalolot.model.business.entities.Guardia;
+import hospitalolot.model.business.entities.Usuari;
 
 /**
  *
- * @author Bernat
+ * @author usuario
  */
-public interface GuardiaDAO extends Dao<Guardia>{
+public interface UsuariDAO extends Dao<Usuari> {
     
 }

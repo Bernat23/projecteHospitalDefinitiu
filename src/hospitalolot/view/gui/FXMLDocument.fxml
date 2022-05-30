@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="396.0" prefWidth="427.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hospitalolot.controller.FXMLDocumentController">
+    <children>
+        <ImageView fitHeight="84.0" fitWidth="298.0" layoutX="65.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="file:/C:/Users/usuario/Documents/NetBeansProjects/HospitalOlotFx/resources/img/genCatSalut.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="137.0" fitWidth="191.0" layoutX="120.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="file:/C:/Users/usuario/Documents/NetBeansProjects/HospitalOlotFx/resources/img/hospital-olot-logo.jpg" />
+            </image>
+        </ImageView>
+        <Label fx:id="lblUsuari" layoutX="130.0" layoutY="246.0" text="Usuari" />
+        <ButtonBar layoutX="168.0" layoutY="274.0" prefHeight="40.0" prefWidth="163.0">
+            <buttons>
+                <PasswordField fx:id="txtContrasenya" promptText="***********" />
+            </buttons>
+        </ButtonBar>
+        <Label fx:id="lblContrasenya" layoutX="97.0" layoutY="285.0" text="Contrasenya" />
+        <ButtonBar layoutX="168.0" layoutY="235.0" prefHeight="40.0" prefWidth="163.0">
+            <buttons>
+                <TextField fx:id="txtUsuari" promptText="Pere" />
+            </buttons>
+        </ButtonBar>
+        <Button fx:id="btnIniciarSessio" layoutX="315.0" layoutY="336.0" mnemonicParsing="false" onAction="#btnIniciarSessio" text="Iniciar sessió" />
+    </children>
+</AnchorPane>

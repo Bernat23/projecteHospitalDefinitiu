@@ -18,7 +18,7 @@ public class Unitat extends Entity{
     }
 
     public Unitat(long id, String tipus) {
-        super(id);
+        super.setId(id);
         this.tipus = tipus;
     }
 
